@@ -1,10 +1,6 @@
-# <img align="center" width="45" src="https://raw.githubusercontent.com/paramt/1pt/master/resources/favicon/android-chrome-512x512.png"> Backend
+# <img align="center" width="45" src="https://raw.githubusercontent.com/paramt/1pt/master/resources/favicon/android-chrome-512x512.png"> 1pt.co API
 
-The API uses Python Flask and it's [hosted on a repl.it](https://repl.it/@paramt/1ptco-API).
-
-## 🖥️ API
-
-The 1pt.co API is public so anyone can create a shortened URL
+The API uses Python Flask and is [hosted on a replit](https://replit.com/@paramt/1ptco-API). The 1pt.co API is public so anyone can create a shortened URL
 
 Endpoint: `api.1pt.co`
 
