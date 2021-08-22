@@ -5,6 +5,12 @@ The API uses Python Flask and is [hosted on a replit](https://replit.com/@paramt
 Endpoint: `api.1pt.co`
 
 ### `/addURL`
+#### Example Url :
+      1. https://api.1pt.co/addURL?long=LONGURLGOESHERE&short=SHORT/CUSTOMNAMEGOESHERE
+          \---->If you want custom name to url
+          
+      2. https://api.1pt.co/addURL?long=LONGURLGOESHERE                               
+          \---->If you want to skip custom name to url
 
 #### Method: `GET`
 
