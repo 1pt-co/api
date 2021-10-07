@@ -68,4 +68,5 @@ def catch_all(u_path):
   response.headers['Access-Control-Allow-Origin'] = '*'
   return response
 
-app.run(host='0.0.0.0')
+if __name__ == '__main__':
+  app.run(host='0.0.0.0')

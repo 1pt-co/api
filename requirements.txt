@@ -1,0 +1,7 @@
+flask
+requests
+pytz
+gspread
+oauth2client
+pysafebrowsing
+validators
