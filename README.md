@@ -4,7 +4,22 @@ The API uses Python Flask and is [hosted on a replit](https://replit.com/@paramt
 
 Endpoint: `api.1pt.co`
 
-### `/addURL`
+  1.  If you want custom name to url 
+   ```
+          https://api.1pt.co/addURL?long={LONG_URL}&short={CUSTOM_SHORT_WORD}
+    
+          https://api.1pt.co/addURL?long=https://www.param.me&short=param
+   ```
+
+
+
+  2.  If you want to skip custom name to url :  
+   ```            
+        https://api.1pt.co/addURL?long={LONG_URL}
+  
+        https://api.1pt.co/addURL?long=https://www.param.me
+   ```
+      
 
 #### Method: `GET`
 
