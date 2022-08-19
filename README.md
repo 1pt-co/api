@@ -2,9 +2,7 @@
 
 The 1pt.co API is public so anyone can create a shortened URL
 
-Endpoint: `thakkaha.dev.fast.sheridanc.on.ca/pme/1pt`
-
-### `/addURL.php`
+Endpoint: `thakkaha.dev.fast.sheridanc.on.ca/pme/1pt/addURL.php`
 
 #### Method: `GET`
 
