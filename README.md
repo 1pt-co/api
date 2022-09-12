@@ -2,7 +2,7 @@
 
 The 1pt.co API is public so anyone can create a shortened URL
 
-Endpoint: `thakkaha.dev.fast.sheridanc.on.ca/pme/1pt`
+Endpoint: `thakdees.dev.fast.sheridanc.on.ca/1pt`
 
 ### `/addURL.php`
 
@@ -10,8 +10,8 @@ Endpoint: `thakkaha.dev.fast.sheridanc.on.ca/pme/1pt`
 
 | Parameter | Description                                                                                                                                                                                        | Example                |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `long`    | **Required** - The long URL to shorten                                                                                                                                                             | `https://www.param.me` |
-| `short`   | **Optional** - The part after `1pt.co/` that will redirect to your long URL. If this paramter is not provided or the requested short URL is already taken, it will return a random 5-letter string | `param`                |
+| `url`    | **Required** - The long URL to shorten                                                                                                                                                             | `https://www.param.me` |
+| `cu`   | **Optional** - The part after `1pt.co/` that will redirect to your long URL. If this paramter is not provided or the requested short URL is already taken, it will return a random 5-letter string | `param`                |
 
 #### Example Response
 
