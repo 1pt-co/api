@@ -2,7 +2,7 @@
 
 The 1pt.co API is public so anyone can create a shortened URL
 
-Endpoint: `thakdees.dev.fast.sheridanc.on.ca/1pt`
+Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt`
 
 ### `/addURL.php`
 
