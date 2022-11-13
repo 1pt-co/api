@@ -14,7 +14,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT long_url, timestamp, hits FROM 1pt WHERE short_url = '$short'";
+$sql = "SELECT long_url, timestamp, hits FROM 1pt WHERE short_url = '$short' LIMIT 1";
 $result = $conn->query($sql);
 
 $result = mysqli_query($conn, $sql);
