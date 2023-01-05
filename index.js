@@ -1,9 +1,12 @@
 import express from "express";
+import helmet from "helmet";
 import cors from "cors";
 import { addURL, getInfo, getURL } from "./handleRequests.js";
 
-const app = express();
 const PORT = 8000;
+
+const app = express();
+app.use(helmet())
 
 app.use(cors())
 
