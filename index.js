@@ -15,7 +15,7 @@ app.get("/getURL", getURL);
 
 app.get("/getInfo", getInfo);
 
-app.get("/addURL", addURL);
+app.post("/addURL", addURL);
 
 app.listen(
     PORT, 
