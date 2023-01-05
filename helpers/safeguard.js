@@ -1,5 +1,5 @@
 export default async (f, logger, req, res) => {
-    f(req, res).catch(err => {
+    f(req, res, logger).catch(err => {
         res.status(500).send({
             message: "Internal server error!"
         })

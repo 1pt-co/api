@@ -37,7 +37,7 @@ export const getInfo = async (req, res) => {
     }
 }
 
-export const addURL = async (req, res) => {
+export const addURL = async (req, res, logger) => {
     const long = req.query.long;
     const requestedShort = req.query.short;
     let short;
@@ -48,7 +48,7 @@ export const addURL = async (req, res) => {
         short = requestedShort
     }
 
-    console.log(`Inserting ${short} -> ${long}`);
+    logger.info(`Inserting ${short} -> ${long}`);
 
     await query(`INSERT INTO 1pt (short_url, long_url) VALUES ('${short}', '${long}')`);
 
