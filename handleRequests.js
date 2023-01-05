@@ -1,44 +1,28 @@
-import sql from "./helpers/db.js";
+import query from "./helpers/db.js";
 import generateRandomString from "./helpers/generateRandomString.js";
 import isHarmful from "./helpers/safebrowsing.js"
 import urlExists from "./helpers/urlExists.js";
 
-export const getURL = (req, res) => {
-    sql.query(`SELECT long_url FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`, (err, rows, fields) => {
-        if (err) throw err
+export const getURL = async (req, res) => {
+    const data = await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`); 
 
-        const data = rows[0];
-
-        if (!data) {
-            res.status(404).send({
-                message: "URL doesn't exist!"
-            })
-
-            return;
-        } 
-        
+    if (data) {
         res.status(301).send({
             url: data.long_url
         })
-    })
-    
-    sql.query(`UPDATE 1pt SET hits=hits+1 WHERE short_url='${req.query.url}'`)
+
+        await query(`UPDATE 1pt SET hits=hits+1 WHERE short_url='${req.query.url}'`)
+    } else {        
+        res.status(404).send({
+            message: "URL doesn't exist!"
+        })
+    }
 }
 
-export const getInfo = (req, res) => {
-    sql.query(`SELECT long_url, timestamp, hits FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`, async (err, rows, fields) => {
-        if (err) throw err
+export const getInfo = async (req, res) => {
+    const data = await query(`SELECT long_url, timestamp, hits FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`);
 
-        const data = rows[0];
-
-        if (!data) {
-            res.status(404).send({
-                message: "URL doesn't exist!"
-            })
-
-            return;
-        } 
-
+    if (data) {
         res.status(200).send({
             short: req.query.url,
             long: data?.long_url,
@@ -46,7 +30,11 @@ export const getInfo = (req, res) => {
             hits: data?.hits,
             malicious: await isHarmful(data.long_url)
         })
-    })
+    } else {
+        res.status(404).send({
+            message: "URL doesn't exist!"
+        })
+    }
 }
 
 export const addURL = async (req, res) => {
@@ -62,11 +50,11 @@ export const addURL = async (req, res) => {
 
     console.log(`Inserting ${short} -> ${long}`);
 
-    sql.query(`INSERT INTO 1pt (short_url, long_url) VALUES ('${short}', '${long}')`, () => {
-        res.status(201).send({
-            message: "Added!", 
-            short: short, 
-            long: long
-        })
+    await query(`INSERT INTO 1pt (short_url, long_url) VALUES ('${short}', '${long}')`);
+
+    res.status(201).send({
+        message: "Added!", 
+        short: short, 
+        long: long
     })
 }

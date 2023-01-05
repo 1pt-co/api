@@ -1,7 +1,7 @@
 import mysql from "mysql";
 import config from "../config.js";
 
-var connection = mysql.createPool({
+const connection = mysql.createPool({
     host: config.HOST,
     user: config.USER,
     password: config.PASSWORD,
@@ -9,4 +9,11 @@ var connection = mysql.createPool({
     multipleStatements: true
 });
 
-export default connection;
+const query = async sql => new Promise((resolve, reject) => {
+    connection.query(sql, (err, rows, fields) => {
+        if (err) reject(err)
+        else resolve(rows[0])
+    })
+})
+
+export default query;
