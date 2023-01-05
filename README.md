@@ -4,20 +4,19 @@ The 1pt.co API is public so anyone can create a shortened URL
 
 Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt`
 
-### `/addURL.php`
+### `/addURL`
 
 #### Method: `GET`
 
 | Parameter | Description                                                                                                                                                                                        | Example                |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `url`    | **Required** - The long URL to shorten                                                                                                                                                             | `https://www.param.me` |
-| `cu`   | **Optional** - The part after `1pt.co/` that will redirect to your long URL. If this paramter is not provided or the requested short URL is already taken, it will return a random 5-letter string | `param`                |
+| `long`    | **Required** - The long URL to shorten                                                                                                                                                             | `https://www.param.me` |
+| `short`   | **Optional** - The part after `1pt.co/` that will redirect to your long URL. If this paramter is not provided or the requested short URL is already taken, it will return a random 5-letter string | `param`                |
 
 #### Example Response
 
 ```json
 {
-  "status": 201,
   "message": "Added!",
   "short": "param",
   "long": "https://www.param.me"
