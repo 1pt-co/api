@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# If you want websockets, uncomment this:
+#RewriteCond %{HTTP:UPGRADE} ^WebSocket$ [NC]
+#RewriteCond %{HTTP:CONNECTION} ^Upgrade$ [NC]
+#RewriteRule .* ws://HOST:RANDOM_PORT%{REQUEST_URI} [L,P]
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule "index.html" "http://localhost:8000/" [P]
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule "^(.*)$" "http://localhost:8000/$1" [P]
