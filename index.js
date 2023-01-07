@@ -18,7 +18,7 @@ const logger = winston.createLogger({
 
 const app = express();
 app.use(helmet())
-app.use(cors({ origin: "https://1pt.co" }))
+app.use(cors())
 
 app.get("/", (req, res) => {
     res.status(200).send("Welcome to the 1pt.co API! Read the docs at github.com/1pt-co/1pt");
