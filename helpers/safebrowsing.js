@@ -1,7 +1,8 @@
 import got from "got";
+import config from "../config.js";
 
 export default async url => {
-    const data = await got.post("https://safebrowsing.googleapis.com/v4/threatMatches:find?key=AIzaSyCeb9qkUdAp8UHj3LsCrWfs-L9Fw2sbyv0", {
+    const data = await got.post(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${config.googleSafeBrowsingKey}`, {
         json: {
             "client": {
                 "clientId": "1pt.co",
