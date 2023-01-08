@@ -1,3 +1,4 @@
+import geoip from "geoip-lite";
 import query from "./helpers/db.js";
 import generateRandomString from "./helpers/generateRandomString.js";
 import isHarmful from "./helpers/safebrowsing.js"
@@ -20,7 +21,7 @@ export const getURL = async (req, res) => {
 }
 
 export const getInfo = async (req, res) => {
-    const data = await query(`SELECT long_url, timestamp, hits FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`);
+    const data = await query(`SELECT long_url, timestamp, hits, ip FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`);
 
     if (data) {
         res.status(200).send({
@@ -28,6 +29,7 @@ export const getInfo = async (req, res) => {
             long: data?.long_url,
             date: data?.timestamp,
             hits: data?.hits,
+            country: geoip.lookup(data?.ip)?.country,
             malicious: await isHarmful(data.long_url)
         })
     } else {
@@ -40,6 +42,8 @@ export const getInfo = async (req, res) => {
 export const addURL = async (req, res, logger) => {
     const long = req.query.long;
     const requestedShort = req.query.short;
+    const ipAddress = req.header("x-forwarded-for") || req.socket.remoteAddress;
+
     let short;
 
     if (!requestedShort || await urlExists(requestedShort)) {
@@ -50,7 +54,7 @@ export const addURL = async (req, res, logger) => {
 
     logger.info(`Inserting ${short} -> ${long}`);
 
-    await query(`INSERT INTO 1pt (short_url, long_url) VALUES ('${short}', '${long}')`);
+    await query(`INSERT INTO 1pt (short_url, long_url, ip) VALUES ('${short}', '${long}', '${ipAddress}')`);
 
     res.status(201).send({
         message: "Added!", 
