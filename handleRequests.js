@@ -102,7 +102,7 @@ export const getProfileInfo = async (req, res) => {
     const user = await verifyToken(auth.split(" ")[1]);
     const email = user.email;
 
-    const data = await query(`SELECT short_url, long_url, timestamp, hits, ip, email FROM 1pt WHERE email = '${email}'`);
+    const data = await query(`SELECT short_url, long_url, timestamp, hits, ip, email FROM 1pt WHERE email = '${email}' ORDER BY timestamp DESC`);
 
     res.status(200).send(data)
 }
