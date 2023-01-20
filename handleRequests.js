@@ -3,9 +3,10 @@ import query from "./helpers/db.js";
 import generateRandomString from "./helpers/generateRandomString.js";
 import isHarmful from "./helpers/safebrowsing.js"
 import urlExists from "./helpers/urlExists.js";
+import verifyToken from "./helpers/verifyToken.js";
 
 export const getURL = async (req, res) => {
-    const data = await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`); 
+    const data = (await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`))[0]; 
 
     if (data) {
         res.status(301).send({
@@ -21,7 +22,7 @@ export const getURL = async (req, res) => {
 }
 
 export const getInfo = async (req, res) => {
-    const data = await query(`SELECT long_url, timestamp, hits, ip FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`);
+    const data = (await query(`SELECT long_url, timestamp, hits, ip FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`))[0];
 
     const malicious = await isHarmful(data.long_url)
     
@@ -59,13 +60,49 @@ export const addURL = async (req, res, logger) => {
         short = requestedShort
     }
 
-    logger.info(`Inserting ${short} -> ${long}`);
+    const auth = req.get("Authorization")
 
-    await query(`INSERT INTO 1pt (short_url, long_url, ip) VALUES ('${short}', '${long}', '${ipAddress}')`);
+    if(auth) {
+        try {
+            const user = await verifyToken(auth.split(" ")[1]);
+            const email = user.email;
+
+            await query(`INSERT INTO 1pt (short_url, long_url, ip, email) VALUES ('${short}', '${long}', '${ipAddress}', '${email}')`);
+
+        } catch {
+            res.status(401).send({
+                message: "Unauthorized", 
+            })
+
+            return
+        }
+
+    } else {
+        await query(`INSERT INTO 1pt (short_url, long_url, ip) VALUES ('${short}', '${long}', '${ipAddress}')`);
+    }
+
+    logger.info(`Inserting ${short} -> ${long}`);
 
     res.status(201).send({
         message: "Added!", 
         short: short, 
         long: long
     })
+}
+
+export const getProfileInfo = async (req, res) => {
+    const auth = req.get("Authorization")
+
+    if (!auth) {
+        console.log("no auth")
+        res.status(401).send()
+        return
+    }
+
+    const user = await verifyToken(auth.split(" ")[1]);
+    const email = user.email;
+
+    const data = await query(`SELECT short_url, long_url, timestamp, hits, ip, email FROM 1pt WHERE email = '${email}'`);
+
+    res.status(200).send(data)
 }

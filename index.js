@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import winston from "winston"
-import { addURL, getInfo, getURL } from "./handleRequests.js";
+import { addURL, getInfo, getProfileInfo, getURL } from "./handleRequests.js";
 import safeguard from "./helpers/safeguard.js";
 
 const PORT = 8000;
@@ -30,6 +30,8 @@ app.get("/getURL", (req, res) => safeguard(getURL, logger, req, res));
 app.get("/getInfo", (req, res) => safeguard(getInfo, logger, req, res));
 
 app.post("/addURL", (req, res) => safeguard(addURL, logger, req, res));
+
+app.get("/getProfileInfo", getProfileInfo);
 
 app.listen(
     PORT, 

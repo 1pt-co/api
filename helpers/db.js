@@ -12,7 +12,7 @@ const connection = mysql.createPool({
 const query = async sql => new Promise((resolve, reject) => {
     connection.query(sql, (err, rows, fields) => {
         if (err) reject(err)
-        else resolve(rows[0])
+        else resolve(rows)
     })
 })
 
