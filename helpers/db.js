@@ -6,7 +6,6 @@ const connection = mysql.createPool({
     user: config.USER,
     password: config.PASSWORD,
     database: config.DB,
-    multipleStatements: true
 });
 
 const query = async sql => new Promise((resolve, reject) => {
