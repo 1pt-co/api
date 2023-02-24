@@ -52,6 +52,14 @@ export const addURL = async (req, res, logger) => {
     const requestedShort = req.query.short;
     const ipAddress = req.ip;
 
+    if (long === undefined || long === "") {
+        res.status(400).send({
+            message: "Bad request", 
+        })
+
+        return;
+    } 
+
     let short;
 
     if (!requestedShort || await urlExists(requestedShort)) {
