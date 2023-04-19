@@ -4,6 +4,7 @@ import generateRandomString from "./helpers/generateRandomString.js";
 import isHarmful from "./helpers/safebrowsing.js"
 import urlExists from "./helpers/urlExists.js";
 import verifyToken from "./helpers/verifyToken.js";
+import { validURL } from "./helpers/urlValidator.js";
 
 export const getURL = async (req, res) => {
     const data = (await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`))[0]; 
@@ -53,12 +54,14 @@ export const addURL = async (req, res, logger) => {
     const ipAddress = req.ip;
 
     if (long === undefined || long === "") {
-        res.status(400).send({
-            message: "Bad request", 
+        return res.status(400).send({
+            message: "parameter `long` is missing", 
         })
-
-        return;
     } 
+
+    if (!validURL(long)) return res.status(400).send({
+        message: 'Malformed URL'
+    })
 
     let short;
 
@@ -78,11 +81,9 @@ export const addURL = async (req, res, logger) => {
             await query(`INSERT INTO 1pt (short_url, long_url, ip, email) VALUES ('${short}', '${long}', '${ipAddress}', '${email}')`);
 
         } catch {
-            res.status(401).send({
+            return res.status(401).send({
                 message: "Unauthorized", 
             })
-
-            return
         }
 
     } else {
@@ -91,7 +92,7 @@ export const addURL = async (req, res, logger) => {
 
     logger.info(`Inserting ${short} -> ${long}`);
 
-    res.status(201).send({
+    return res.status(201).send({
         message: "Added!", 
         short: short, 
         long: long
