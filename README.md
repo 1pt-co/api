@@ -2,6 +2,13 @@
 
 The 1pt.co API is public so anyone can create a shortened URL
 
+## Instructions to use it localy
+1. To use this on local host download XAMPP (`https://www.apachefriends.org/download.html`) or MySQL database.
+2. Set up .env file or modify `config.js` file to enter database credentials.
+3. Open terminal in the project root and type `npm start`
+
+
+## EndPoints
 Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt-express`
 
 > Note: the old endpoint (`csclub.uwaterloo.ca/~phthakka/1pt`) is still live but will soon be **deprecated**.
@@ -29,4 +36,4 @@ Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt-express`
 
 #### Method: `GET`
 
-With this endpoint 1pt.co/r/param will redirect to https://www.param.me
+###### With this endpoint 1pt.co/r/param will redirect to https://www.param.me
