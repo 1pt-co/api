@@ -4,7 +4,7 @@ import generateRandomString from "./helpers/generateRandomString.js";
 import isHarmful from "./helpers/safebrowsing.js"
 import urlExists from "./helpers/urlExists.js";
 import verifyToken from "./helpers/verifyToken.js";
-import { validURL } from "./helpers/urlValidator.js";
+import { addhttp, validURL } from "./helpers/urlUtils.js";
 
 export const getURL = async (req, res) => {
     const data = (await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`))[0]; 
@@ -15,7 +15,7 @@ export const getURL = async (req, res) => {
         })
 
         await query(`UPDATE 1pt SET hits=hits+1 WHERE short_url='${req.query.url}'`)
-    } else {        
+    } else {
         res.status(404).send({
             message: "URL doesn't exist!"
         })
@@ -82,7 +82,7 @@ export const addURL = async (req, res, logger) => {
 
         } catch {
             return res.status(401).send({
-                message: "Unauthorized", 
+                message: "Unauthorized",
             })
         }
 
@@ -118,10 +118,9 @@ export const getProfileInfo = async (req, res) => {
 
 export const redirect = async (req, res) => {
     const data = (await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.params.shortCode}' LIMIT 1`))[0];
-
     if (data) {
-        res.status(301).redirect(data.long_url)
+        return res.status(301).redirect(addhttp(data.long_url))
     } else {
-        res.status(404).redirect('/')
+        return res.status(404).redirect('/')
     }
 }
