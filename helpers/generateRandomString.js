@@ -10,7 +10,7 @@ const generateRandomString = async n => {
 
     const exists = await urlExists(randomString);
 
-    if (exists) { 
+    if (exists) {
         randomString = await generateRandomString(n)
     }
 

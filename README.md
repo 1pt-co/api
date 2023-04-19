@@ -25,4 +25,8 @@ Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt-express`
 }
 ```
 
-With this example 1pt.co/param will redirect to https://www.param.me
+### `/r/<short code>`
+
+#### Method: `GET`
+
+With this endpoint 1pt.co/r/param will redirect to https://www.param.me
