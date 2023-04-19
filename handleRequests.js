@@ -4,6 +4,7 @@ import generateRandomString from "./helpers/generateRandomString.js";
 import isHarmful from "./helpers/safebrowsing.js"
 import urlExists from "./helpers/urlExists.js";
 import verifyToken from "./helpers/verifyToken.js";
+import { addhttp, validURL } from "./helpers/urlUtils.js";
 
 export const getURL = async (req, res) => {
     const data = (await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.query.url}' LIMIT 1`))[0]; 
@@ -14,7 +15,7 @@ export const getURL = async (req, res) => {
         })
 
         await query(`UPDATE 1pt SET hits=hits+1 WHERE short_url='${req.query.url}'`)
-    } else {        
+    } else {
         res.status(404).send({
             message: "URL doesn't exist!"
         })
@@ -53,12 +54,14 @@ export const addURL = async (req, res, logger) => {
     const ipAddress = req.ip;
 
     if (long === undefined || long === "") {
-        res.status(400).send({
-            message: "Bad request", 
+        return res.status(400).send({
+            message: "parameter `long` is missing", 
         })
-
-        return;
     } 
+
+    if (!validURL(long)) return res.status(400).send({
+        message: 'Malformed URL'
+    })
 
     let short;
 
@@ -78,11 +81,9 @@ export const addURL = async (req, res, logger) => {
             await query(`INSERT INTO 1pt (short_url, long_url, ip, email) VALUES ('${short}', '${long}', '${ipAddress}', '${email}')`);
 
         } catch {
-            res.status(401).send({
-                message: "Unauthorized", 
+            return res.status(401).send({
+                message: "Unauthorized",
             })
-
-            return
         }
 
     } else {
@@ -91,7 +92,7 @@ export const addURL = async (req, res, logger) => {
 
     logger.info(`Inserting ${short} -> ${long}`);
 
-    res.status(201).send({
+    return res.status(201).send({
         message: "Added!", 
         short: short, 
         long: long
@@ -109,8 +110,17 @@ export const getProfileInfo = async (req, res) => {
 
     const user = await verifyToken(auth.split(" ")[1]);
     const email = user.email;
-
     const data = await query(`SELECT short_url, long_url, timestamp, hits, ip, email FROM 1pt WHERE email = '${email}' ORDER BY timestamp DESC`);
 
     res.status(200).send(data)
+}
+
+
+export const redirect = async (req, res) => {
+    const data = (await query(`SELECT long_url FROM 1pt WHERE short_url = '${req.params.shortCode}' LIMIT 1`))[0];
+    if (data) {
+        return res.status(301).redirect(addhttp(data.long_url))
+    } else {
+        return res.status(404).redirect('/')
+    }
 }
