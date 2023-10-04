@@ -51,6 +51,7 @@ export const addURL = async (req, res, logger) => {
     const long = req.query.long;
     const requestedShort = req.query.short;
     const ipAddress = req.ip;
+    let receivedRequestedShort = true;
 
     if (long === undefined || long === "") {
         res.status(400).send({
@@ -62,10 +63,13 @@ export const addURL = async (req, res, logger) => {
 
     let short;
 
-    if (!requestedShort || await urlExists(requestedShort)) {
+    if (!requestedShort) {
         short = await generateRandomString(5);
+    } else if (await urlExists(requestedShort)) {
+        short = await generateRandomString(5)
+        receivedRequestedShort = false;
     } else {
-        short = requestedShort
+        short = requestedShort;
     }
 
     const auth = req.get("Authorization")
@@ -91,11 +95,16 @@ export const addURL = async (req, res, logger) => {
 
     logger.info(`Inserting ${short} -> ${long}`);
 
-    res.status(201).send({
-        message: "Added!", 
-        short: short, 
-        long: long
-    })
+    if (requestedShort) {
+        res.status(201).send({
+            message: "Added!", short, long,
+            receivedRequestedShort
+        })
+    } else {
+        res.status(201).send({
+            message: "Added!", short, long,
+        })
+    }
 }
 
 export const getProfileInfo = async (req, res) => {
