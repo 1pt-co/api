@@ -4,7 +4,8 @@ The 1pt.co API is public so anyone can create a shortened URL
 
 Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt-express`
 
-> Note: the old endpoint (`csclub.uwaterloo.ca/~phthakka/1pt`) is still live but will soon be **deprecated**.
+> [!WARNING]
+> The old endpoint (`csclub.uwaterloo.ca/~phthakka/1pt`) is still live but will soon be **deprecated**.
 
 ### `/addURL`
 
