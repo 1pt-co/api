@@ -26,3 +26,6 @@ Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt-express`
 ```
 
 With this example 1pt.co/param will redirect to https://www.param.me
+
+> [!NOTE]
+> If the requested short is taken, it will return a random 5-letter string along with the flag `receivedRequestedShort: false`
