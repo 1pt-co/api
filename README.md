@@ -7,7 +7,22 @@ Endpoint: `csclub.uwaterloo.ca/~phthakka/1pt-express`
 > [!WARNING]
 > The old endpoint (`csclub.uwaterloo.ca/~phthakka/1pt`) is still live but will soon be **deprecated**.
 
-### `/addURL`
+  1.  If you want custom name to url 
+   ```
+          https://api.1pt.co/addURL?long={LONG_URL}&short={CUSTOM_SHORT_WORD}
+    
+          https://api.1pt.co/addURL?long=https://www.param.me&short=param
+   ```
+
+
+
+  2.  If you want to skip custom name to url :  
+   ```            
+        https://api.1pt.co/addURL?long={LONG_URL}
+  
+        https://api.1pt.co/addURL?long=https://www.param.me
+   ```
+      
 
 #### Method: `POST`
 
